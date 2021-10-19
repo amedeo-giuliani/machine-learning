@@ -32,7 +32,7 @@ import sklearn as sl
 from sklearn import linear_model
 
 
-# In[39]:
+# In[95]:
 
 
 # Load the provided data file with the used car data (you can also have a look at it with any text editor)
@@ -56,7 +56,7 @@ print(dataset.shape)
 # 
 # 
 
-# In[55]:
+# In[96]:
 
 
 # linear regression with linregress (estimate price from year)
@@ -84,7 +84,7 @@ slope1,intercept1,rvalue1,_,_ = stats.linregress(year,price)
 # your code.....
 
 
-# In[56]:
+# In[91]:
 
 
 # Plot the data and the lines representing the output of the linregress and least square algorithms
@@ -92,10 +92,10 @@ slope1,intercept1,rvalue1,_,_ = stats.linregress(year,price)
 plt.plot(year,price,'.',label='dataset')
 plt.plot(year,intercept1+slope1*year,label='fit')
 plt.legend()
-plt.show()
+plt.savefig('linreg_pricefromyear.jpg',dpi=480)
 
 
-# In[57]:
+# In[97]:
 
 
 # linear regression with linregress (estimate price from power)
@@ -107,10 +107,10 @@ slope2,intercept2,rvalue2,_,_ = stats.linregress(power,price)
 plt.plot(power,price,'.',label='dataset')
 plt.plot(power,intercept2+slope2*power,label='fit')
 plt.legend()
-plt.show()
+plt.savefig('linreg_pricefrompower.jpg',dpi=480)
 
 
-# In[58]:
+# In[98]:
 
 
 # linear regression with linregress (estimate price from km)
@@ -122,7 +122,7 @@ slope3,intercept3,rvalue3,_,_ = stats.linregress(km,price)
 plt.plot(km,price,'.',label='dataset')
 plt.plot(km,intercept3+slope3*km,label='fit')
 plt.legend()
-plt.show()
+plt.savefig('linreg_pricefromkm.jpg',dpi=480)
 
 
 # In[59]:
@@ -133,8 +133,27 @@ plt.show()
 print(rvalue1,rvalue2,rvalue3)
 
 
-# In[63]:
+# In[107]:
 
 
 # (Optional) 2D linear regression with linear model (estimate price from year and power)
+
+import pandas as pd
+from matplotlib.ticker import MaxNLocator
+
+dataset = pd.read_csv(filename)
+display(dataset)
+year_power = dataset[['year','powerPS']]
+price = dataset['avgPrice']
+linreg = linear_model.LinearRegression()
+linreg.fit(year_power,price)
+slopes = linreg.coef_
+
+fig = plt.figure()
+ax = fig.add_subplot(projection='3d')
+ax.xaxis.set_major_locator(MaxNLocator(integer=True))
+ax.plot(year_power['year'],year_power['powerPS'],price,'.',label='dataset')
+ax.plot(year_power['year'],year_power['powerPS'],linreg.intercept_+slopes[0]*year_power['year']+slopes[1]*year_power['powerPS'],label='fit')
+plt.legend()
+plt.savefig('linreg_pricefromyearpower.jpg',dpi=480)
 
