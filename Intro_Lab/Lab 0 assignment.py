@@ -89,6 +89,7 @@ slope1,intercept1,rvalue1,_,_ = stats.linregress(year,price)
 
 # Plot the data and the lines representing the output of the linregress and least square algorithms
 
+plt.clf()
 plt.plot(year,price,'.',label='dataset')
 plt.plot(year,intercept1+slope1*year,label='fit')
 plt.legend()
@@ -104,6 +105,7 @@ power = dataset[:,2]
 price = dataset[:,3]
 slope2,intercept2,rvalue2,_,_ = stats.linregress(power,price)
 
+plt.clf()
 plt.plot(power,price,'.',label='dataset')
 plt.plot(power,intercept2+slope2*power,label='fit')
 plt.legend()
@@ -119,6 +121,7 @@ km = dataset[:,0]
 price = dataset[:,3]
 slope3,intercept3,rvalue3,_,_ = stats.linregress(km,price)
 
+plt.clf()
 plt.plot(km,price,'.',label='dataset')
 plt.plot(km,intercept3+slope3*km,label='fit')
 plt.legend()
@@ -152,6 +155,7 @@ X,Y = np.meshgrid(year_power[:,0],year_power[:,1])
 fit = linreg.intercept_+slopes[0]*X+slopes[1]*Y
 
 plt.rcParams["figure.figsize"]=(10,10)
+plt.clf()
 fig = plt.figure()
 ax = fig.add_subplot(projection='3d')
 ax.xaxis.set_major_locator(MaxNLocator(integer=True))
