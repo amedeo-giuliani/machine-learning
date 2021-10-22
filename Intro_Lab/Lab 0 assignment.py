@@ -32,7 +32,7 @@ import sklearn as sl
 from sklearn import linear_model
 
 
-# In[95]:
+# In[2]:
 
 
 # Load the provided data file with the used car data (you can also have a look at it with any text editor)
@@ -133,7 +133,7 @@ plt.savefig('linreg_pricefromkm.jpg',dpi=480)
 print(rvalue1,rvalue2,rvalue3)
 
 
-# In[107]:
+# In[75]:
 
 
 # (Optional) 2D linear regression with linear model (estimate price from year and power)
@@ -142,18 +142,20 @@ import pandas as pd
 from matplotlib.ticker import MaxNLocator
 
 dataset = pd.read_csv(filename)
-display(dataset)
-year_power = dataset[['year','powerPS']]
-price = dataset['avgPrice']
+#display(dataset)
+year_power = dataset[['year','powerPS']].to_numpy()
+price = dataset['avgPrice'].to_numpy()
 linreg = linear_model.LinearRegression()
 linreg.fit(year_power,price)
 slopes = linreg.coef_
+X,Y = np.meshgrid(year_power[:,0],year_power[:,1])
+fit = linreg.intercept_+slopes[0]*X+slopes[1]*Y
 
+plt.rcParams["figure.figsize"]=(10,10)
 fig = plt.figure()
 ax = fig.add_subplot(projection='3d')
 ax.xaxis.set_major_locator(MaxNLocator(integer=True))
-ax.plot(year_power['year'],year_power['powerPS'],price,'.',label='dataset')
-ax.plot(year_power['year'],year_power['powerPS'],linreg.intercept_+slopes[0]*year_power['year']+slopes[1]*year_power['powerPS'],label='fit')
-plt.legend()
+ax.plot(year_power[:,0],year_power[:,1],price,'.',label='dataset')
+ax.plot_surface(X,Y,fit,label='fit')
 plt.savefig('linreg_pricefromyearpower.jpg',dpi=480)
 
